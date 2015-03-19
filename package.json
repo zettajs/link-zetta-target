@@ -1,0 +1,22 @@
+{
+  "name": "zetta-multi-cloud",
+  "version": "0.0.0",
+  "description": "",
+  "main": "runner.js",
+  "dependencies": {
+    "argo": "^0.5.0",
+    "cassandra-driver": "~1.0.1",
+    "levelup": "~0.19.0",
+    "memdown": "~1.0.0",
+    "node-etcd": "^4.0.0",
+    "rx": "^2.3.14",
+    "zetta": "~0.21.0",
+    "zetta-photocell-mock-driver": "~0.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevin Swiber <kswiber@gmail.com>",
+  "license": "ISC"
+}
