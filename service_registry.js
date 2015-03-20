@@ -45,7 +45,7 @@ ServiceRegistry.prototype.add = function(type, serverUrl, version, cb) {
   var data = { type: type, url: serverUrl, created: new Date(), version: version };
   var key = url.parse(serverUrl);
 
-  this._client.set(this._etcDirectory + '/' + key.host, JSON.stringify(data), { ttl: this._ttl } ,function(err, results) {
+  this._client.set(this._etcDirectory + '/' + key.host, JSON.stringify(data)/*, { ttl: this._ttl }*/ ,function(err, results) {
     if (err) {
       err.errors.forEach(function(e) {
         console.log(e);

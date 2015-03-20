@@ -31,9 +31,9 @@ instance.httpServer.server.on('close', function() {
 var timer = null;
 instance.listen(port, function() {
   serviceRegistryClient.add('cloud-target', instanceUrl, version);
-  timer = setInterval(function() {
+  //timer = setInterval(function() {
     serviceRegistryClient.add('cloud-target', instanceUrl, version);
-  }, 60000);
+  //}, 60000);
 });
 
 ['SIGINT', 'SIGTERM'].forEach(function(signal) {
