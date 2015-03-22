@@ -25,8 +25,11 @@ var instance = zetta({
 instance.name('cloud-' + port);
 
 if (process.env.DEVICE_DATA_QUEUE) {
+
   var sqs = new DeviceDataSqs({
-    queueUrl: process.env.DEVICE_DATA_QUEUE
+    queueUrl: process.env.DEVICE_DATA_QUEUE,
+    accessKeyId: process.env.AWS_ACCESSKEY,
+    secretAccessKey: process.env.AWS_SECRET
   });
 
   instance.use(sqs.collect());
