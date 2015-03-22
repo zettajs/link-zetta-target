@@ -2,6 +2,7 @@ var zetta = require('zetta');
 var MemoryPeerRegistry = require('./memory_peer_registry');
 var MemoryRegistry = require('./memory_registry');
 var ServiceRegistry = require('./service_registry');
+var DeviceDataSqs = require('zetta-device-data-sqs');
 
 var port = process.env.MAPPED_PORT || 3001;
 var version = process.env.VERSION || '0';
@@ -10,9 +11,11 @@ var options = {
   host: process.env.COREOS_PRIVATE_IPV4
 };
 
-var peerRegistry = new MemoryPeerRegistry();
+var instanceUrl = 'http://' + process.env.COREOS_PRIVATE_IPV4 + ':' + port;
 
+var peerRegistry = new MemoryPeerRegistry();
 var serviceRegistryClient = new ServiceRegistry(options);
+
 
 var instance = zetta({
   registry: new MemoryRegistry(), // no device registry is needed
@@ -21,7 +24,14 @@ var instance = zetta({
 
 instance.name('cloud-' + port);
 
-var instanceUrl = 'http://' + process.env.COREOS_PRIVATE_IPV4 + ':' + port;
+if (process.env.DEVICE_DATA_QUEUE) {
+  var sqs = new DeviceDataSqs({
+    queueUrl: process.env.DEVICE_DATA_QUEUE
+  });
+
+  instance.use(sqs.collect());
+}
+
 
 instance.httpServer.server.on('close', function() {
   serviceRegistryClient.remove('cloud-target', instanceUrl);

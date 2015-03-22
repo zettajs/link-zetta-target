@@ -9,7 +9,8 @@
     "memdown": "~1.0.0",
     "node-etcd": "^4.0.0",
     "rx": "^2.3.14",
-    "zetta": "~0.22.0"
+    "zetta": "~0.22.0",
+    "zetta-device-data-sqs": "0.0.2"
   },
   "scripts": {
     "test": ""
