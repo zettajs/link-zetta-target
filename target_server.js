@@ -7,6 +7,10 @@ var UsageCollector = require('./sqs_collector');
 
 var port = process.env.MAPPED_PORT || 3001;
 var version = process.env.VERSION || '0';
+var UsageApp = require('zetta-usage-addon');
+var UsageCollector = require('./sqs_collector');
+
+var app = new UsageApp()
 
 var app = new UsageApp()
 
@@ -45,4 +49,16 @@ if (process.env.DEVICE_DATA_QUEUE) {
   instance.use(sqs.collect());
 }
 
+if (process.env.ZETTA_USAGE_QUEUE) {
+  var opts = {
+    queueUrl: process.env.ZETTA_USAGE_QUEUE,
+    accessKeyId: process.env.AWS_ACCESSKEY,
+    secretAccessKey: process.env.AWS_SECRET,
+    collector: app
+  }
+  Collector(opts);
+}
+
 instance.listen(port);
+
+
