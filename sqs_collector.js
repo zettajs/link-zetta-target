@@ -30,6 +30,7 @@ module.exports = function(options){
   }
 
   emitter.on('data', function(data) {
+    data.upload = new Date().getTime();
     sendMessage(JSON.stringify(data));
   });
 }
