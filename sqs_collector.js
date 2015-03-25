@@ -8,14 +8,12 @@ module.exports = function(options){
     throw new Error('Must supply queueUrl');  
   }
 
-  AWS.config.update({
+  var emitter = options.emitter;
+  var queue = new AWS.SQS({
     accessKeyId: options.accessKeyId,
     secretAccessKey: options.secretAccessKey,
     region: options.region || 'us-east-1'
   });
-
-  var emitter = options.emitter;
-  var queue = new AWS.SQS();
   
   function sendMessage(body) {
     var opts = {
@@ -32,6 +30,6 @@ module.exports = function(options){
   }
 
   emitter.on('data', function(data) {
-    sendMessage(JSON.stringify(data));  
+    sendMessage(JSON.stringify(data));
   });
 }

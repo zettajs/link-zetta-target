@@ -8,13 +8,6 @@ var port = process.env.MAPPED_PORT || 3001;
 var version = process.env.VERSION || '0';
 
 var app = new UsageApp()
-var options = {
-  host: process.env.COREOS_PRIVATE_IPV4
-};
-
-var peerRegistry = new MemoryPeerRegistry();
-
-var serviceRegistryClient = new ServiceRegistry(options);
 
 var instance = zetta({
   registry: new MemoryRegistry(), // no device registry is needed
