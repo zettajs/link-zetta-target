@@ -5,12 +5,14 @@
   "main": "runner.js",
   "dependencies": {
     "argo": "^0.5.0",
+    "aws-sdk": "^2.1.19",
     "levelup": "~0.19.0",
     "memdown": "~1.0.0",
     "node-etcd": "^4.0.0",
     "rx": "^2.3.14",
     "zetta": "~0.23.0",
-    "zetta-device-data-sqs": "0.0.3"
+    "zetta-device-data-sqs": "0.0.3",
+    "zetta-usage-addon": "0.2.0"
   },
   "scripts": {
     "test": ""
