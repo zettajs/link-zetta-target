@@ -33,9 +33,9 @@ if (process.env.ZETTA_USAGE_QUEUE) {
     queueUrl: process.env.ZETTA_USAGE_QUEUE,
     accessKeyId: process.env.AWS_ACCESSKEY,
     secretAccessKey: process.env.AWS_SECRET,
-    collector: app
+    emitter: app
   }
-  Collector(opts);
+  UsageCollector(opts);
 }
 
 instance.listen(port);
