@@ -1,4 +1,5 @@
 var AWS = require('aws-sdk');
+var Rx = require('rx');
 
 module.exports = function(options){
 
@@ -29,8 +30,18 @@ module.exports = function(options){
     
   }
 
-  emitter.on('data', function(data) {
-    data.upload = new Date().getTime();
-    sendMessage(JSON.stringify(data));
-  });
+  var source = Rx.Observable.fromEvent(emitter, 'data');
+
+  source
+    .groupBy(function(x) {
+      return x.connectionId  
+    })
+    .subscribe(function(obs){
+      obs
+        .sample(3000)
+        .subscribe(function(data){
+          data.upload = new Date().getTime();
+          sendMessage(JSON.stringify(data));
+        });  
+    });
 }
