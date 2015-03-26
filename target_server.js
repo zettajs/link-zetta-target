@@ -28,9 +28,9 @@ if (process.env.DEVICE_DATA_QUEUE) {
   instance.use(sqs.collect());
 }
 
-if (process.env.ZETTA_USAGE_QUEUE) {
+if (process.env.USAGE_QUEUE) {
   var opts = {
-    queueUrl: process.env.ZETTA_USAGE_QUEUE,
+    queueUrl: process.env.USAGE_QUEUE,
     accessKeyId: process.env.AWS_ACCESSKEY,
     secretAccessKey: process.env.AWS_SECRET,
     emitter: app
