@@ -4,12 +4,11 @@
   "description": "",
   "main": "runner.js",
   "dependencies": {
-    "argo": "^0.5.0",
     "aws-sdk": "^2.1.19",
     "levelup": "~0.19.0",
     "memdown": "~1.0.0",
     "rx": "^2.3.14",
-    "zetta": "~0.25.0",
+    "zetta": "~0.26.0",
     "zetta-device-data-sqs": "0.0.4",
     "zetta-usage-addon": "0.3.0"
   },
