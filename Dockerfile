@@ -1,4 +1,4 @@
-FROM mdobson/node-zetta-docker
+FROM node:0.12-slim
 
 MAINTAINER Matthew Dobson <mdobson@apigee.com>
 
