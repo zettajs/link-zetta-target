@@ -33,6 +33,9 @@ module.exports = function(options){
   var source = Rx.Observable.fromEvent(emitter, 'data');
 
   source
+    .filter(function(x) {
+      return x.connectionId;
+    })
     .groupBy(function(x) {
       return x.connectionId  
     })
