@@ -18,7 +18,7 @@ var instance = zetta({
 instance.name('cloud-devices');
 
 // MQTT is enabled only if there is a broker URL
-if (process.env.MQTT_BROKER_URL) {
+if (process.env.MQTT_BROKER_URL && process.env.MQTT_BROKER_URL.indexOf('@@') !== 0) {
   console.log('Enabling MQTT scout to broker ', process.env.MQTT_BROKER_URL);
   instance.use(MqttScout, { clientId: (process.env.COREOS_PRIVATE_IPV4 || 'localhost') + ':' + port,
                             url: process.env.MQTT_BROKER_URL
