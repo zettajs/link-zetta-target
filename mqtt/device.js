@@ -60,7 +60,6 @@ Driver.prototype.init = function(config) {
       // Unsubscribe to everything...
       self.destroy();
     }, self._options.destroyTimeout);
-    console.log('Destroying in ', self._options.destroyTimeout);
   });
 
   self._client.subscribe('device/' + self.id + '/$log');
