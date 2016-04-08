@@ -9,19 +9,22 @@ function getFromBitMask(mask, transitions) {
   });
 }
 
-var Driver = module.exports = function(deviceId, deviceModel, client) {
+var Driver = module.exports = function(deviceId, deviceModel, client, options) {
   Device.call(this);
+
+  var self = this;
+  if (typeof deviceModel.properties === 'object') {
+    Object.keys(deviceModel.properties).forEach(function(k) {
+      self[k] = deviceModel.properties[k];
+    });
+  }
 
   this.id = deviceId;
   this._model = deviceModel;
   this._client = client;
-
-  var self = this;
-  if (typeof this._model.properties === 'object') {
-    Object.keys(this._model.properties).forEach(function(k) {
-      self[k] = self._model.properties[k];
-    });
-  }
+  this._options = options || {
+    destroyTimeout: 300000 //5m
+  };
 };
 util.inherits(Driver, Device);
 
@@ -56,7 +59,8 @@ Driver.prototype.init = function(config) {
     self._destroyTimer = setTimeout(function() {
       // Unsubscribe to everything...
       self.destroy();
-    }, 300000);
+    }, self._options.destroyTimeout);
+    console.log('Destroying in ', self._options.destroyTimeout);
   });
 
   self._client.subscribe('device/' + self.id + '/$log');

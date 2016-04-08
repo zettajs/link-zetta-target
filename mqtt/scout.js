@@ -12,7 +12,11 @@ var MqttScout = module.exports = function(options) {
     username: options.username,
     password: options.password
   }));
+
+  options.destroyTimeout = options.destroyTimeout || 300000 //5m
   
+  this.options = options;
+
   Scout.call(this);
 };
 util.inherits(MqttScout, Scout);
@@ -47,7 +51,7 @@ MqttScout.prototype.initDevice = function(deviceId, deviceModel) {
   var query = this.server.where({ id: deviceId });
   this.server.find(query, function(err, results) {
     if (results.length > 0) {
-      var device = self.provision(results[0], MqttDriver, deviceId, deviceModel, self.client);
+      var device = self.provision(results[0], MqttDriver, deviceId, deviceModel, self.client, self.options);
       if (!device) {
         device = self.server._jsDevices[deviceId];
         device.state = deviceModel.state;
@@ -61,7 +65,7 @@ MqttScout.prototype.initDevice = function(deviceId, deviceModel) {
         device.log('device reconnected.');
       }
     } else {
-      self.discover(MqttDriver, deviceId, deviceModel, self.client);
+      self.discover(MqttDriver, deviceId, deviceModel, self.client, self.options);
     }
   });
 };

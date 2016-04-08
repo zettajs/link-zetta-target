@@ -21,7 +21,8 @@ instance.name('cloud-devices');
 if (process.env.MQTT_BROKER_URL && process.env.MQTT_BROKER_URL.indexOf('@@') !== 0) {
   console.log('Enabling MQTT scout to broker ', process.env.MQTT_BROKER_URL);
   instance.use(MqttScout, { clientId: (process.env.COREOS_PRIVATE_IPV4 || 'localhost') + ':' + port,
-                            url: process.env.MQTT_BROKER_URL
+                            url: process.env.MQTT_BROKER_URL,
+                            destroyTimeout: process.env.MQTT_DESTROY_TIMEOUT || 300000
                           });
 }
 
