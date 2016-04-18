@@ -6,6 +6,7 @@ var UsageApp = require('zetta-usage-addon');
 var UsageCollector = require('./sqs_collector');
 var port = process.env.MAPPED_PORT || 3001;
 var version = process.env.VERSION || '0';
+var RestartResource = require('./restart_resource');
 
 
 
@@ -15,6 +16,9 @@ var instance = zetta({
 });
 
 instance.name('cloud-' + port);
+instance.use(function(server) {
+  server.httpServer.cloud.add(RestartResource);
+});
 
 if (process.env.DEVICE_DATA_QUEUE) {
   var sqs = new DeviceDataSqs({
