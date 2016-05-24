@@ -3,7 +3,8 @@ var InfluxCollector = require('zetta-device-data-influxdb');
 var url = require('url');
 
 module.exports = function(server) {
-  var client = new InfluxNodeClient({host: process.env.COREOS_PRIVATE_IPV4 || '172.17.8.104' });
+  var client = new InfluxNodeClient({host: process.env.COREOS_PRIVATE_IPV4});
+  var db = process.env.INFLUX_DATABASE;
   var connected = false;
   var interval = setInterval(function() {
     if(connected) {
@@ -16,7 +17,7 @@ module.exports = function(server) {
         var opts = {
           host: endpointUrl.hostname,
           port: endpointUrl.port,
-          database: 'deviceData'
+          database: db
         }
 
         var influx = new InfluxCollector(opts);

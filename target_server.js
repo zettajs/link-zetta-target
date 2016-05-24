@@ -41,7 +41,10 @@ if (process.env.USAGE_QUEUE) {
   }
   UsageCollector(opts);
 }
-instance.use(DeviceDataInflux);
+
+if(process.env.INFLUX_DATABASE) {
+  instance.use(DeviceDataInflux);
+}
 
 instance.listen(port);
 
