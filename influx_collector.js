@@ -10,7 +10,6 @@ module.exports = function(server) {
       return clearInterval(interval);
     }
     client.findAll(function(err, results) {
-      console.log(arguments);
       if(!err) {
         var endpoint = results[0].url;
         var endpointUrl = url.parse(endpoint);
@@ -19,11 +18,9 @@ module.exports = function(server) {
           port: endpointUrl.port,
           database: 'deviceData'
         }
-        console.log(opts);
 
         var influx = new InfluxCollector(opts);
         connected = true;
-        console.log('connected. starting collection.');
         influx._collect(server);
       }  
     });
