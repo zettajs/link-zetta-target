@@ -6,15 +6,22 @@ module.exports = function(server) {
   var client = new InfluxNodeClient({host: process.env.COREOS_PRIVATE_IPV4});
   var db = process.env.INFLUX_DATABASE;
   client.findAll(function(err, results) {
-    if(!err && results.length) {
-      connect(results[0]);
-    } 
 
     client.on('change', function(results) {
       if(results.length) {
         update(results[0]);
       } 
-    });  
+    });
+
+    if(!err && results.length) {
+      return connect(results[0]);
+    } 
+
+    if(err) {
+      server.log('Error searching for influx: ' + error);
+    }
+
+      
   });
   
   var influx = null;
@@ -46,6 +53,8 @@ module.exports = function(server) {
       } 
 
       influx.configure(opts);
+    } else {
+      connect(influxUrl);
     }
   }
 }
