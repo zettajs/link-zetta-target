@@ -18,7 +18,7 @@ module.exports = function(server) {
     } 
 
     if(err) {
-      server.log('Error searching for influx: ' + error);
+      server.log('Error searching for influx: ' + err);
     }
 
       
