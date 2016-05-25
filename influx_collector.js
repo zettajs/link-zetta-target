@@ -12,7 +12,7 @@ module.exports = function(server) {
 
     client.on('change', function(results) {
       if(results.length) {
-        connect(results[0]);
+        update(results[0]);
       } 
     });  
   });
