@@ -5,7 +5,7 @@ var util = require('util');
 var InfluxNodeClient = module.exports = function(options) {
   EventEmitter.call(this);
   var self = this;
-  this._etcDirectory = '/services/influx';
+  this._etcDirectory = '/influx';
   options = options || {};
   
   if(!options.client) {
