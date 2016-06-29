@@ -10,7 +10,7 @@
     "node-etcd": "^4.2.1",
     "rx": "^2.3.14",
     "zetta": "^1.0.0-beta.7",
-    "zetta-device-data-influxdb": "^0.7.0",
+    "zetta-device-data-influxdb": "^0.8.0",
     "zetta-device-data-sqs": "0.0.4",
     "zetta-usage-addon": "0.4.0"
   },
