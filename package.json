@@ -5,10 +5,12 @@
   "main": "runner.js",
   "dependencies": {
     "aws-sdk": "^2.1.19",
+    "jsonwebtoken": "^7.0.0",
     "levelup": "~0.19.0",
     "memdown": "~1.0.0",
+    "node-etcd": "^4.2.1",
     "rx": "^2.3.14",
-    "zetta": "^1.0.0-beta.7",
+    "zetta": "^1.1.0",
     "zetta-device-data-sqs": "0.0.4",
     "zetta-usage-addon": "0.4.0"
   },

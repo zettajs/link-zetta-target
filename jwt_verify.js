@@ -1,0 +1,99 @@
+var url = require('url');
+var http = require('http');
+var jwt = require('jsonwebtoken');
+
+function getJwtInHeader(request) {
+  return request.headers['authorization'];
+}
+
+// jwtPlaintextKey - Encryption key to verify jwt
+// opts.hostname   - Hostname of running server used to address this target
+// port            - Port of running target
+module.exports = function(jwtPlaintextKeys, hostnames, port) {
+  if (typeof hostnames === 'string') {
+    hostnames = [hostnames];
+  }
+
+  return function(server) {
+
+    var verifyToken = function(key, text) {
+      try {
+        var token = jwt.verify(text, key);
+        var location = url.parse(token.location);
+        
+        // Make sure token location matches this target
+        if (hostnames.indexOf(location.hostname) === -1 || location.port !== port) {
+          return false;
+        }
+      } catch(err) {
+        return false;
+      }
+
+      return true;
+    };
+    
+    // HTTP Requests
+    server.httpServer.cloud.use(function(handle) {
+      handle('request', function(env, next) {
+        var cipher = null;
+        if (getJwtInHeader(env.request)) {
+          cipher = getJwtInHeader(env.request);
+        } else {
+          // Check url param
+          var parsed = url.parse(env.request.url, true);
+          cipher = parsed.query.jwt;
+        }
+
+        if (!cipher || !verifyToken(jwtPlaintextKeys.internal, cipher)) {
+          env.response.statusCode = 401;
+          env.response.end();
+          return;
+        }
+
+        next(env);
+      });
+    });
+    
+    
+    // On Websocket connection
+    server.httpServer.onEventWebsocketConnect(function(request, socket, head, next) {
+      var cipher = null;
+      
+      // Check header
+      if (getJwtInHeader(request)) {
+        cipher = getJwtInHeader(request);
+      } else {
+        // Check url param
+        var parsed = url.parse(request.url, true);
+        cipher = parsed.query.jwt;
+      }
+
+      if(!cipher || !verifyToken(jwtPlaintextKeys.internal, cipher)) {
+        httpResponse(socket, 401);
+      } else {
+        next();
+      }
+    });
+    
+    // Peer connection
+    server.httpServer.onPeerConnect(function(request, socket, head, next) {
+      var parsed = url.parse(request.url, true);
+
+      if (!parsed.query.jwt) {
+        httpResponse(socket, 401);
+        return;
+      }
+
+      if(!verifyToken(jwtPlaintextKeys.external, parsed.query.jwt)) {
+        httpResponse(socket, 401);
+      } else {
+        next();
+      }
+    })
+  };
+}
+
+function httpResponse(socket, code) {
+  var responseLine = 'HTTP/1.1 ' + code + ' ' + http.STATUS_CODES[code] + '\r\n\r\n\r\n';
+  socket.end(responseLine);
+}
