@@ -2,6 +2,7 @@ var zetta = require('zetta');
 var MemoryPeerRegistry = require('./memory_peer_registry');
 var MemoryRegistry = require('./memory_registry');
 var DeviceDataSqs = require('zetta-device-data-sqs');
+var DeviceDataInflux = require('./influx_collector');
 var UsageApp = require('zetta-usage-addon');
 var UsageCollector = require('./sqs_collector');
 var port = process.env.MAPPED_PORT || 3001;
@@ -39,6 +40,10 @@ if (process.env.USAGE_QUEUE) {
     emitter: app
   }
   UsageCollector(opts);
+}
+
+if(process.env.INFLUX_DATABASE) {
+  instance.use(DeviceDataInflux);
 }
 
 instance.listen(port);
