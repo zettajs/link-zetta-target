@@ -11,8 +11,8 @@
     "rx": "^2.3.14",
     "zetta": "^1.0.0",
     "zetta-device-data-influxdb": "^0.9.0",
-    "zetta-device-data-sqs": "0.0.4",
-    "zetta-usage-addon": "0.4.0"
+    "zetta-device-data-sqs": "0.0.5",
+    "zetta-usage-addon": "0.5.0"
   },
   "scripts": {
     "test": ""
