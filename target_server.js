@@ -54,6 +54,10 @@ if (process.env.INFLUXDB_HOST) {
   var opts = {
     host: process.env.COREOS_PRIVATE_IPV4
   };
+  // allow a list of peers to be passed, overides COREOS_PRIVATE_IPV4
+  if (process.env.ETCD_PEER_HOSTS) {
+    opts.host = process.env.ETCD_PEER_HOSTS.split(',');
+  }
   var serviceRegistryClient = new ServiceRegistryClient(opts);
   var statsdHost = process.env.COREOS_PRIVATE_IPV4 || 'localhost';
   var statsClient = new StatsClient(statsdHost + ':8125', { }, { telegraf: true });

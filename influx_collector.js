@@ -3,7 +3,16 @@ var InfluxCollector = require('zetta-device-data-influxdb');
 var url = require('url');
 
 module.exports = function(server) {
-  var client = new InfluxNodeClient({host: process.env.COREOS_PRIVATE_IPV4});
+
+  var opts = {
+    host: process.env.COREOS_PRIVATE_IPV4
+  };
+  // allow a list of peers to be passed, overides COREOS_PRIVATE_IPV4
+  if (process.env.ETCD_PEER_HOSTS) {
+    opts.host = process.env.ETCD_PEER_HOSTS.split(',');
+  }
+  
+  var client = new InfluxNodeClient(opts);
   var db = process.env.INFLUX_DATABASE;
   client.findAll(function(err, results) {
 
