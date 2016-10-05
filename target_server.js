@@ -6,6 +6,7 @@ var DeviceDataSqs = require('zetta-device-data-sqs');
 var UsageApp = require('zetta-usage-addon');
 var UsageCollector = require('./sqs_collector');
 var RestartResource = require('./restart_resource');
+var PingResource = require('./ping_resource');
 var RouterUpdater = require('./routing_updater');
 var RouterClient = require('./clients/router_client');
 var ServiceRegistryClient = require('./clients/service_registry_client');
@@ -87,6 +88,7 @@ function startServer() {
   instance.name('cloud-' + port);
   instance.use(function(server) {
     server.httpServer.cloud.add(RestartResource);
+    server.httpServer.cloud.add(PingResource);
   });
 
   if (process.env.DEVICE_DATA_QUEUE) {
