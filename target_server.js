@@ -9,9 +9,9 @@ var UsageCollector = require('./sqs_collector');
 var port = process.env.MAPPED_PORT || 3001;
 var version = process.env.VERSION || '0';
 var RestartResource = require('./restart_resource');
+var PingResource = require('./ping_resource');
 var ServiceRegistryClient = require('./service_registry_client');
 var MetaUsageCollector = require('./meta_usage_collector');
-var pingEndpoint = require('./ping_endpoint_app');
 
 var instance = zetta({
   registry: new MemoryRegistry(), // no device registry is needed
@@ -21,9 +21,14 @@ var instance = zetta({
 instance.name('cloud-' + port);
 instance.use(function(server) {
   server.httpServer.cloud.add(RestartResource);
+  server.httpServer.cloud.add(PingResource);
 });
 
-instance.use(pingEndpoint);
+instance.logger(function(log) {
+  log.on('message', function(level, event, msg, data) {
+    console.log(level, event, msg);
+  });
+});
 
 if (process.env.DEVICE_DATA_QUEUE) {
   var sqs = new DeviceDataSqs({

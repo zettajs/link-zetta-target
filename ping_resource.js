@@ -1,4 +1,4 @@
-var PingResource = function() { };
+var PingResource = module.exports = function() { };
 
 PingResource.prototype.init = function(config) {
   config
@@ -9,10 +9,4 @@ PingResource.prototype.init = function(config) {
 PingResource.prototype.ping = function(env, next) {
   env.response.statusCode = 200;
   return next(env);
-};
-
-
-module.exports = function(server) {
-  var cloud = server.httpServer.cloud;
-  cloud.add(PingResource);
 };
