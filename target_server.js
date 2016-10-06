@@ -94,6 +94,12 @@ function startServer() {
     server.httpServer.cloud.add(PingResource);
   });
 
+  instance.logger(function(log) {
+    log.on('message', function(level, event, msg, data) {
+      console.log(level, event, msg);
+    });
+  });
+
   if (process.env.DEVICE_DATA_QUEUE) {
     var sqs = new DeviceDataSqs({
       queueUrl: process.env.DEVICE_DATA_QUEUE,
