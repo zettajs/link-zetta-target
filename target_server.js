@@ -1,5 +1,6 @@
 var AWS = require('aws-sdk');
 var zetta = require('zetta');
+var StatsClient = require('stats-client');
 var MemoryPeerRegistry = require('./memory_peer_registry');
 var MemoryRegistry = require('./memory_registry');
 var DeviceDataSqs = require('zetta-device-data-sqs');
@@ -40,6 +41,8 @@ if (process.env.ETCD_PEER_HOSTS) {
 
 var serviceRegistryClient = new ServiceRegistryClient(opts);
 var routerClient = new RouterClient(opts);
+var statsdHost = process.env.COREOS_PRIVATE_IPV4 || 'localhost';
+var statsClient = new StatsClient(statsdHost + ':8125', { }, { telegraf: true });
 
 if (!process.env.JWT_CIPHER_TEXT) {
   if (process.env.JWT_PLAIN_TEXT) {
@@ -112,7 +115,7 @@ function startServer() {
     UsageCollector(opts);
   }
 
-  instance.use(RouterUpdater(serverUrl, routerClient, serviceRegistryClient));
+  instance.use(RouterUpdater(serverUrl, routerClient, serviceRegistryClient, statsClient));
 
   if (jwtPlaintextKeys) {
     console.log('JWT Verification enabled');

@@ -1,6 +1,6 @@
 // Update ETCD with hubs routing info
 
-module.exports = function(serverUrl, routerClient, serviceRegistryClient) {
+module.exports = function(serverUrl, routerClient, serviceRegistryClient, statsClient) {
   return function(server) {
 
     var _tenantId = null;
@@ -76,6 +76,9 @@ module.exports = function(serverUrl, routerClient, serviceRegistryClient) {
     
     
     server.pubsub.subscribe('_peer/connect', function(topic, data) {
+
+      statsClient.increment('target.peer.connect', { tenant: _tenantId || '' });
+      
       updatePeer(data.peer, function(err) {
         if (err) {
           server.error('Failed to update peer "'+ data.peer.name +'" in router. ' + err.message);
@@ -85,6 +88,9 @@ module.exports = function(serverUrl, routerClient, serviceRegistryClient) {
     });
     
     server.pubsub.subscribe('_peer/disconnect', function(topic, data) {
+
+      statsClient.increment('target.peer.disconnect', { tenant: _tenantId || '' });
+      
       removePeer(data.peer, function(err) {
         if (err) {
           server.error('Failed to remove peer "'+ data.peer.name +'" from router. ' + err.message);
