@@ -55,6 +55,7 @@ if(process.env.INFLUX_DATABASE) {
   instance.use(DeviceDataInflux);
 }
 
+/*
 if (process.env.INFLUXDB_HOST) {
   console.log('Starting Meta Usage Collector');
   
@@ -71,6 +72,7 @@ if (process.env.INFLUXDB_HOST) {
   var serverUrl = ((process.env.COREOS_PRIVATE_IPV4) ? process.env.COREOS_PRIVATE_IPV4 : 'localhost') + ':' + port;
   instance.use(MetaUsageCollector({ client: statsClient, serviceRegistryClient: serviceRegistryClient, serverUrl: serverUrl }));
 }
+*/
 
 
 instance.listen(port);
