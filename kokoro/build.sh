@@ -14,10 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#!/bin/sh
-
-docker rm zetta-target
-docker rmi zetta/zetta-target-server
-
-docker build -t zetta/zetta-target-server .
-
+#!/bin/bash
+set -x
+cd git/link-zetta-target
