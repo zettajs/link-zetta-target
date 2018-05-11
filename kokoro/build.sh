@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-./build.sh
-docker stop zetta.target.3001
-docker stop zetta.target.3002
-docker stop zetta.target.3003
+#!/bin/bash
+set -x
+cd git/link-zetta-target
