@@ -15,5 +15,5 @@
 # limitations under the License.
 
 #!/bin/sh
-docker build -t zetta/zetta-target-server .
+docker build -t zetta/link-zetta-target .
 

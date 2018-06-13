@@ -4,7 +4,7 @@ MAINTAINER Matthew Dobson <mdobson@apigee.com>
 
 ADD     . /zetta_target
 WORKDIR /zetta_target
-RUN     npm install
+RUN     npm install --production
 
 ENV    PORT 3000
 EXPOSE 3000
